@@ -550,8 +550,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 1846251047}
   m_HandleRect: {fileID: 892312190}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -4
+  m_MaxValue: 4
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -652,8 +652,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 1221733111}
   m_HandleRect: {fileID: 549350276}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -180
+  m_MaxValue: 180
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -1292,10 +1292,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 362443217}
   m_HandleRect: {fileID: 256871098}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -4
+  m_MaxValue: 4
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -3083,10 +3083,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 951699727}
   m_HandleRect: {fileID: 1837842234}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -4
+  m_MaxValue: 4
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -3600,7 +3600,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.099998906
+        value: 0.04424724
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -4143,8 +4143,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 1799519111}
   m_HandleRect: {fileID: 2093840170}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -4
+  m_MaxValue: 4
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
