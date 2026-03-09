@@ -43,9 +43,10 @@ public class Conicas : MonoBehaviour
     {
         if (conicaSeleccionada != 0)
         {
-            LineRenderer lr = GetComponent<LineRenderer>();
-            LineRenderer lr2= GetComponent<LineRenderer>();
+            LineRenderer lr = GetComponent<LineRenderer>();          
             lr.SetVertexCount(resolucion + 1);
+            LineRenderer lr2 = GetComponent<LineRenderer>();
+            lr2.SetVertexCount(resolucion + 1);
 
             a = sl_a.value;
             b = sl_b.value;
@@ -99,35 +100,11 @@ public class Conicas : MonoBehaviour
 
                 case 5://Hiperbola
                     txtConicas.text = "Hiperbola";
-
-                    // Asignamos el material a ambos LineRenderers
-                    lr2.material = matHiperbola;
-                    if (lr2 != null) lr.material = matHiperbola;
-
+                    lr.material = matHiperbola;
                     ResetSlidersEtiquetas();
-                    lbl_a.gameObject.SetActive(true);
-                    lbl_b.gameObject.SetActive(true);
-                    sl_b.gameObject.SetActive(true);
-                    sl_a.gameObject.SetActive(true);
-
-                    lbl_a.text = "a";
-                    lbl_b.text = "b";
-
-                    // 1. Obtenemos las dos ramas de nuestra nueva función
-                    Vector3[][] ramas = CreaHiperbolaAmbasRamas(a, b, h, k, t, resolucion);
-
-                    // 2. Dibujamos la primera rama en el LineRenderer original (lr)
-                    lr.positionCount = ramas[0].Length;
-                    lr.SetPositions(ramas[0]);
-
-                    // 3. Dibujamos la segunda rama en el nuevo LineRenderer (lr2)
-                    if (lr2 != null)
-                    {
-                        // Activamos el componente por si estaba apagado en otras cónicas
-                        lr2.gameObject.SetActive(true);
-                        lr2.positionCount = ramas[1].Length;
-                        lr2.SetPositions(ramas[1]);
-                    }
+                    lbl_b.text = "p";
+                    lbl_a.text = "p";
+                    posPuntos = CreaHiperbola(a, b, h, k, t, resolucion);
                     break;
             }
 
@@ -251,33 +228,46 @@ public class Conicas : MonoBehaviour
         conicaSeleccionada = 5;
         DibujaConica();
     }
-    private Vector3[][] CreaHiperbolaAmbasRamas(float a, float b, float h, float k, float theta, int resolucion)
+    private Vector3[] CreaHiperbola(float a, float b, float h, float k, float theta, int resolucion)
     {
-        // Creamos dos arreglos, uno para cada rama
-        Vector3[] ramaDerecha = new Vector3[resolucion + 1];
-        Vector3[] ramaIzquierda = new Vector3[resolucion + 1];
-
+        posPuntos = new Vector3[resolucion + 1];
         Quaternion q = Quaternion.AngleAxis(theta, Vector3.forward);
-        Vector3 centro = new Vector3(h, k, 0.0f); // (h,k) es el centro de la figura
+        Vector3 centro = new Vector3(h, k, 0);
 
-        float rango = Mathf.PI / 2 - 0.1f; // evitar infinito en la tangente/secante
+        int mitad = resolucion / 2;
+        float rango = 10f;
 
         for (int i = 0; i <= resolucion; i++)
         {
-            float t = Mathf.Lerp(-rango, rango, (float)i / resolucion);
+            float x, y;
 
-            // Cálculos para la Rama Derecha
-            float xDer = a / Mathf.Cos(t);
-            float yDer = b * Mathf.Tan(t);
-            ramaDerecha[i] = centro + q * new Vector3(xDer, yDer, 0);
+            // 'paso' va de 0 a 1 dentro de cada mitad
+            float paso;
 
-            // Cálculos para la Rama Izquierda (x es negativo)
-            float xIzq = -a / Mathf.Cos(t);
-            float yIzq = b * Mathf.Tan(t);
-            ramaIzquierda[i] = centro + q * new Vector3(xIzq, yIzq, 0);
+            if (i <= mitad)
+            {
+                paso = (float)i / mitad;  // 0 → 1
+
+                // y va de -rango hasta +rango (de abajo hacia arriba)
+                y = -rango + (2 * rango * paso);
+
+                // x se despeja de la ecuación: x²/a² - y²/b² = 1
+                x = a * Mathf.Sqrt(1 + (y * y) / (b * b));
+            }
+            else
+            {
+                paso = (float)(i - mitad) / mitad;  // 0 → 1
+
+                // y va de +rango hasta -rango (de arriba hacia abajo)
+                y = rango - (2 * rango * paso);
+
+                // x negativo = rama izquierda
+                x = -a * Mathf.Sqrt(1 + (y * y) / (b * b));
+            }
+
+            posPuntos[i] = q * new Vector3(x, y, 0) + centro;
         }
 
-        // Devolvemos ambas ramas empaquetadas
-        return new Vector3[][] { ramaDerecha, ramaIzquierda };
+        return posPuntos;
     }
 }
