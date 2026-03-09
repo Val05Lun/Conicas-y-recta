@@ -150,15 +150,25 @@ public class Conicas : MonoBehaviour
         DibujaConica();
     }
 
-    private Vector3[] CreaRecta(float ax, float ay, float bx, float by, int resolucion)
+    Vector3[] CreaRecta(float ax, float ay, float bx, float by, int resolucion)
     {
         posPuntos = new Vector3[resolucion + 1];
-        float dx = (bx - ax);
-        float dy = (by - ay);
+
+        float dx = bx - ax;
+        float dy = by - ay;
+
+        float rango = 5f; // cuánto se extiende la recta
+
         for (int i = 0; i <= resolucion; i++)
         {
-            posPuntos[i] = new Vector3(ax + dx * i / resolucion, ay + dy * i / resolucion);
+            float t = ((float)i / resolucion - 0.5f) * rango;
+
+            float x = ax + dx * t;
+            float y = ay + dy * t;
+
+            posPuntos[i] = new Vector3(x, y, 0);
         }
+
         return posPuntos;
     }
 
